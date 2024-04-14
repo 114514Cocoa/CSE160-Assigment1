@@ -69,7 +69,7 @@ function connectVariablesToGLSL(){
 const POINT = 0;
 const TRIANGLE = 1;
 const CIRCLE = 2;
-
+const DRAW = 3;
 //Globals related UI elements
 let g_selectedColor=[1.0,1.0,1.0,1.0];
 let g_selectedSize=5;
@@ -83,6 +83,18 @@ function addActionsForHtmlUI(){
   document.getElementById('red').onclick = function() { g_selectedColor = [1.0,0.0,0.0,1.0];};
   document.getElementById('clearButton').onclick = function() { g_shapesList=[]; renderAllShapes();};
   
+  //Draw Events
+  document.getElementById('drawButton').onclick = function() {
+    g_shapesList=[];
+    let a = new Draw();
+    //a.position = [0.0, 0.2];
+    //a.color = [1.0, 1.0, 0.0, 1.0];
+    a.size = 40;
+    a.segment = 16;
+    g_shapesList.push(a);
+    renderAllShapes();
+  };
+
   document.getElementById('pointButton').onclick = function() { g_selectedType=POINT;};
   document.getElementById('triButton').onclick = function() { g_selectedType=TRIANGLE;};
   document.getElementById('circleButton').onclick = function() { g_selectedType=CIRCLE;};
@@ -124,6 +136,7 @@ var g_shapesList = [];
 //var g_colors = [];  // The array to store the color of a point
 //var g_sizes = []; //The array to store the size of a point
 
+
 function click(ev) {
   //Extract the event click and return it in WebGL coordinates
   let [x,y] = converCoordinatesEventsToGL(ev);
@@ -134,7 +147,7 @@ function click(ev) {
     point = new Point();
   }else if(g_selectedType==TRIANGLE){
     point = new Triangle();
-  }else{
+  }else if(g_selectedSize=CIRCLE){
     point = new Circle();
   }
   point.position=[x,y];
